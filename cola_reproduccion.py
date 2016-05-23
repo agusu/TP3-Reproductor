@@ -12,12 +12,28 @@ class ColaDeReproduccion:
 	def __init__(self, lista_canciones = []):
 		""" Recibe una lista de objetos de clase Cancion con las canciones que se quieren 
 		reproducir."""
-		raise NotImplementedError()
+		if not lista_canciones:
+			self.primero=None
+			self.ultimo=None
+		self.primero=lista_canciones[0]
+		self.ultimo=lista_canciones[-1]
+		self.ultimo.prox = None
+		for x in range(len(lista_canciones)-1):
+			self.prox=lista_canciones[x+1]
+			#no se si esto va a funcionar bien. va a hacer referencia al nodo/cancion de la lista
+			#o a la posicion de la lista?  al nodo/cancion, no?
+		self.historial=Pila()
 
 	def cancion_actual(self):
 		""" Devuelve un objeto de clase Cancion que corresponde a la cancion actual, o None si no 
 		hay canciones cargadas en la cola."""
-		raise NotImplementedError()
+
+		#esto sería desencolar. no se si está bien acá,quizas habria q hacer una cola
+		#doblemente enlazada? porque si se van descartando las canciones que pasan
+		# no se podria hacer anterior y siguiente
+		if self.primero is None:
+			raise ValueError('La cola de reproducción está vacía')
+		return self.primero
 
 	def cancion_siguiente(self):
 		""" Devuelve un objeto de clase Cancion que corresponde a la cancion siguiente en la cola, 
