@@ -7,20 +7,27 @@ class Cancion:
 	def __init__(self, ruta, titulo = "Cancion desconocida", artista = "Autor desconocido"):
 		# Usar TinyTag para obtener la informacion de la cancion, sobreescribir con lo pasado por 
 		# parametro solo si la informacion no se encuentra disponible
-		self.info={
-			'ruta': ruta,
-			'titulo': titulo,
-			'artista': artista}
-		# averiguar que carajo es tinytag y como se usa
-		self.prox=None
-
+		self.ruta = ruta
+		try:
+			datos = TinyTag.get(ruta)
+			self.titulo = datos.title
+			self.artista = datos.artist
+		except LookupError:
+			self.titulo = titulo
+			self.artista = artista
+		
+		
 	def obtener_ruta(self):
 		""" Devuelve la ruta del archivo de la cancion."""
-		return self.info['ruta']
+		return self.ruta
+
 	def obtener_titulo(self):
 		""" Devuelve el titulo de la cancion."""
-		return self.info['titulo']
+		return self.titulo
+		
 
 	def obtener_artista(self):
 		""" Devuelve el artista de la cancion."""
-		return self.info['artista']
+		return self.artista
+
+	
