@@ -10,6 +10,8 @@ class Cancion:
 		self.ruta = ruta
 		try:
 			datos = TinyTag.get(ruta)
+			if not datos.title or not datos.artist:
+				raise LookupError
 			self.titulo = datos.title
 			self.artista = datos.artist
 		except LookupError:
