@@ -185,12 +185,19 @@ class WidgetColaReproduccion():
 	def __init__(self, cola_de_reproduccion, x, y):
 		""" x e y indican la posicion del widget y cola_de_reproduccion una ColaDeReproduccion de 
 		la que se quiere mostrar la informacion de las canciones."""
-		raise NotImplementedError()
+		self.cola_de_reproduccion = cola_de_reproduccion
+		self.x = x
+		self.y = y
 
 	def actualizar(self):
 		""" Actualiza la informacion de las canciones de la cola de reproduccion que se muestran en el widget."""
-		raise NotImplementedError()
+		#self.cola_de_reproduccion.remover_cancion(self.cola_de_reproduccion.canciones[self.cola_de_reproduccion.actual].obtener_ruta())
 
 	def dibujar(self):
 		""" Dibuja la lista de canciones de la cola de reproduccion en la pantalla."""
-		raise NotImplementedError()
+		rango = len(self.cola_de_reproduccion.canciones)
+		if self.CANTIDAD_CANCIONES_MOSTRADAS < rango:
+			rango = self.CANTIDAD_CANCIONES_MOSTRADAS
+		for i in range(1,rango):
+			cancion = self.cola_de_reproduccion.canciones[i]
+			pyglet.text.Label(text = "{} - {}".format(cancion.obtener_titulo(), cancion.obtener_artista()), x = self.x, y = self.y - 20*(i-1)).draw()
