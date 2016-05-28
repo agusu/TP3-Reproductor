@@ -72,3 +72,4 @@ class Reproductor(media.Player):
 			self.cargar_cancion(cancion)
 			self.reproducir()
 		self.dispatch_event("on_eos")
+

@@ -1,13 +1,16 @@
-from cola_reproduccion import SUSTRACCION, ADICION
+REMOVER = '-'
+AGREGAR = '+'
 
 class Accion:
-    def __init__(self, cancion, tipo = ADICION):
-        """Recibe un objeto de la clase cancion y un tipo de accion (ADICION/SUSTRACCION)"""
+    def __init__(self, cancion, tipo=AGREGAR, posicion=None):
+        """Recibe un objeto de la clase cancion y un tipo de accion (AGREGAR/REMOVER)"""
         self.tipo = tipo
         self.cancion = cancion
+        self.posicion = posicion
 
 class PilaHistorial:
     """Pila que contiene objetos de la clase Accion"""
+
     def __init__(self):
         self.historial = []
 
