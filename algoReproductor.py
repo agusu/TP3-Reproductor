@@ -6,8 +6,7 @@ import sys
 import pyglet
 from ventana_reproductor import VentanaReproductor
 from reproductor import Reproductor
-from cola_reproduccion import ColaDeReproduccion, EXTENSIONES_ACEPTADAS
-from cancion import Cancion
+from cola_reproduccion import ColaDeReproduccion
 
 def agregar_canciones(cola, ruta_directorio):
 	""" Agrega a la cola las canciones que se encuentran en el directorio y en los directorios

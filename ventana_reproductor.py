@@ -1,6 +1,8 @@
 import pyglet
 from pyglet.window import key
 
+PAD = 5
+
 
 class VentanaReproductor(pyglet.window.Window):
     """ Ventana del reproductor, que permite controlarlo, modificar la cola de reproduccion y
@@ -9,46 +11,48 @@ class VentanaReproductor(pyglet.window.Window):
     # Altura de los labels, util para calcular la posición de los mismos cuando hay varios juntos
     ALTURA_LABELS = 20
 
-    MENSAJE_AGREGADA = "Cancion agregada a la cola de reproducción con exito"
-    MENSAJE_REMOVIDA = "Cancion removida de la cola de reproducción con exito"
+    MENSAJE_AGREGADA = "Cancion agregada a la cola de reproducción exitosamente"
+    MENSAJE_REMOVIDA = "Cancion removida de la cola de reproducción  exitosamente"
     MENSAJE_DESHECHO = "Se deshizo la modificación"
     MENSAJE_REHECHO = "Se rehizo la modificación"
     MENSAJE_FALLO_MODIFICACION = "No se pudo modificar la cola de reproducción"
 
     def __init__(self, reproductor):
         super().__init__(caption='Reproductor', height=self.ALTURA_LABELS * (
-        9 + WidgetColaReproduccion.CANTIDAD_CANCIONES_MOSTRADAS), visible=True, resizable=False)
+            9 + WidgetColaReproduccion.CANTIDAD_CANCIONES_MOSTRADAS), visible=True, resizable=False)
         self.reproductor = reproductor
         self.reproductor.on_eos = self.on_eos
         self.batch = pyglet.graphics.Batch()
 
+        pad = PAD
         # Label que muestra el estado del reproductor (reproduciendo o detenido)
-        self.label_estado = pyglet.text.Label("Estado", y=self.height, anchor_y="top",
-                                              height=self.ALTURA_LABELS, batch=self.batch)
+        self.label_estado = pyglet.text.Label("Estado", y=self.height, anchor_y="top", x=pad,
+                                              height=self.ALTURA_LABELS, batch=self.batch, italic=True,
+                                              color=(255, 215, 59, 255))
         # Labels para mostrar la informacion de la cancion actual
         self.label_titulo = pyglet.text.Label("Titulo", y=self.label_estado.y - self.ALTURA_LABELS,
-                                              anchor_y="top", height=self.ALTURA_LABELS,
-                                              batch=self.batch)
+                                              anchor_y="top", height=self.ALTURA_LABELS, x=pad,
+                                              batch=self.batch, bold=True, font_size=14)
         self.label_autor = pyglet.text.Label("Artista", y=self.label_titulo.y - self.ALTURA_LABELS,
                                              anchor_y="top", height=self.ALTURA_LABELS,
-                                             batch=self.batch)
+                                             batch=self.batch, font_size=13, x=pad)
 
         # Seccion de agregar/remover cancion
-        self.label_ruta = pyglet.text.Label("Ruta cancion:",
-                                            y=self.label_autor.y - self.ALTURA_LABELS * 2,
-                                            anchor_y='top', width=120, batch=self.batch)
+        self.label_ruta = pyglet.text.Label("Ruta canción:",
+                                            y=self.label_autor.y - self.ALTURA_LABELS * 2, x=pad,
+                                            anchor_y='top', width=120, batch=self.batch, color=(255, 215, 59, 255))
         self.texto_ruta = WidgetTexto(self.label_ruta.width, self.label_ruta.y - self.ALTURA_LABELS,
                                       self.width - self.label_ruta.width - 10, self.batch)
         self.label_modificado = pyglet.text.Label("",
                                                   y=self.label_ruta.y - self.ALTURA_LABELS - WidgetTexto.PAD,
                                                   anchor_y='top', width=self.width, multiline=True,
-                                                  batch=self.batch)
+                                                  batch=self.batch, x=pad, color=(192,202,216,255))
         self.focus = None
 
         # Seccion cola de reproduccion
         self.label_cola_reproduccion = pyglet.text.Label("Cola de reproducción:",
-                                                         y=self.label_modificado.y - self.ALTURA_LABELS * 2,
-                                                         anchor_y='top', batch=self.batch)
+                                                         y=self.label_modificado.y - self.ALTURA_LABELS * 2, x=PAD,
+                                                         anchor_y='top', batch=self.batch, color=(255, 215, 59, 255))
         self.lista_cola_reproduccion = WidgetColaReproduccion(self.reproductor.cola_de_reproduccion,
                                                               0,
                                                               self.label_cola_reproduccion.y - self.ALTURA_LABELS * 2)
@@ -172,7 +176,7 @@ class WidgetTexto():
         """ x e y indican la posicion del widget, ancho la cantidad de puntos de ancho que tendra,
         y batch indica el pyglet.graphics.Batch al que pertenecera el widget."""
         self.documento = pyglet.text.document.UnformattedDocument("")
-        self.documento.set_style(0, len(self.documento.text), dict(color=(0, 0, 0, 255)))
+        self.documento.set_style(0, len(self.documento.text), dict(color=(255, 255, 255, 255)))
         fuente = self.documento.get_font()
         alto = fuente.ascent - fuente.descent
 
@@ -183,11 +187,12 @@ class WidgetTexto():
         self.layout.x = x
         self.layout.y = y
 
-        pad = self.PAD
+        pad = PAD
         batch.add(4, pyglet.gl.GL_QUADS, None, ('v2i', [x - pad, y - pad, x + ancho + pad, y - pad,
                                                         x + ancho + pad, y + alto + pad, x - pad,
                                                         y + alto + pad]),
-                  ('c4B', [200, 200, 220, 255] * 4))
+                  ('c4B', [56, 55, 86, 255] * 4))
+
 
     def obtener_texto(self):
         """ Devuelve el texto ingresado en el widget."""
@@ -196,7 +201,7 @@ class WidgetTexto():
     def chequear_superposicion(self, x, y):
         """ Devuelve True si la posicion (x,y) dada se encuentra dentro del espacio del widget."""
         return (
-        0 < x - self.layout.x < self.layout.width and 0 < y - self.layout.y < self.layout.height)
+            0 < x - self.layout.x < self.layout.width and 0 < y - self.layout.y < self.layout.height)
 
 
 class WidgetColaReproduccion():
@@ -218,15 +223,19 @@ class WidgetColaReproduccion():
         """ Actualiza la informacion de las canciones de la cola de reproduccion que se muestran en el widget."""
         self.cola_mostrada = self.cola_de_reproduccion.obtener_n_siguientes(self.CANTIDAD_CANCIONES_MOSTRADAS)
 
-        # self.cola_de_reproduccion.remover_cancion(self.cola_de_reproduccion.canciones[self.cola_de_reproduccion.actual].obtener_ruta())
-
     def dibujar(self):
         """ Dibuja la lista de canciones de la cola de reproduccion en la pantalla """
         rango = len(self.cola_mostrada)
         if self.CANTIDAD_CANCIONES_MOSTRADAS < rango:
             rango = self.CANTIDAD_CANCIONES_MOSTRADAS
-        for i in range(1, rango):
+        pyglet.graphics.draw(8, pyglet.gl.GL_QUADS,
+                             ('v2i', (PAD - 2, 212, 637, 212,
+                                      PAD - 2, PAD + 2, 637, PAD + 2,
+                                      PAD - 2, 212, PAD - 2, PAD + 2,
+                                      637, PAD + 2, 637, 212)),
+                             ('c3B', ([0,0,0] * 8)))
+        for i in range(0, rango):
             cancion = self.cola_mostrada[i]
             pyglet.text.Label(
                 text="{} - {}".format(cancion.obtener_titulo(), cancion.obtener_artista()),
-                x=self.x, y=self.y - 20 * (i - 1)).draw()
+                x=self.x + PAD, y=self.y - 20 * i, color=(0, 255, 0, 255)).draw()

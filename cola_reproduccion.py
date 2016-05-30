@@ -97,7 +97,7 @@ class ColaDeReproduccion:
         if accion.posicion:
             self.canciones.insert(accion.cancion, accion.posicion)
         else:
-            self.canciones.append(accion)
+            self.canciones.append(accion.cancion)
 
     def rehacer_modificacion(self):
         """ Rehace la ultima accion que se deshizo. Devuelve True si pudo rehacerse, False en caso
@@ -122,10 +122,10 @@ class ColaDeReproduccion:
         n_siguientes = []
         if n_canciones > len(self.canciones) - self.actual - 1:
             for x in range(self.actual + 1, len(self.canciones)):
-                n_siguientes.append(self.canciones[x].obtener_ruta())
+                n_siguientes.append(self.canciones[x])
         else:
             for x in range(self.actual + 1, self.actual + n_canciones + 1):
-                n_siguientes.append(self.canciones[x].obtener_ruta())
+                n_siguientes.append(self.canciones[x])
         return n_siguientes
 
     def cantidad_canciones(self):
