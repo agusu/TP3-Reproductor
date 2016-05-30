@@ -12,7 +12,7 @@ class VentanaReproductor(pyglet.window.Window):
     ALTURA_LABELS = 20
 
     MENSAJE_AGREGADA = "Cancion agregada a la cola de reproducción exitosamente"
-    MENSAJE_REMOVIDA = "Cancion removida de la cola de reproducción  exitosamente"
+    MENSAJE_REMOVIDA = "Cancion removida de la cola de reproducción exitosamente"
     MENSAJE_DESHECHO = "Se deshizo la modificación"
     MENSAJE_REHECHO = "Se rehizo la modificación"
     MENSAJE_FALLO_MODIFICACION = "No se pudo modificar la cola de reproducción"
