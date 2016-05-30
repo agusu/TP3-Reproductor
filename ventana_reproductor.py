@@ -228,12 +228,7 @@ class WidgetColaReproduccion():
         rango = len(self.cola_mostrada)
         if self.CANTIDAD_CANCIONES_MOSTRADAS < rango:
             rango = self.CANTIDAD_CANCIONES_MOSTRADAS
-        pyglet.graphics.draw(8, pyglet.gl.GL_QUADS,
-                             ('v2i', (PAD - 2, 212, 637, 212,
-                                      PAD - 2, PAD + 2, 637, PAD + 2,
-                                      PAD - 2, 212, PAD - 2, PAD + 2,
-                                      637, PAD + 2, 637, 212)),
-                             ('c3B', ([0,0,0] * 8)))
+
         for i in range(0, rango):
             cancion = self.cola_mostrada[i]
             pyglet.text.Label(
