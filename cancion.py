@@ -5,8 +5,6 @@ class Cancion:
 	Obtiene la informacion a partir de los tags del archivo, si los tiene."""
 
 	def __init__(self, ruta, titulo = "Cancion desconocida", artista = "Autor desconocido"):
-		# Usar TinyTag para obtener la informacion de la cancion, sobreescribir con lo pasado por 
-		# parametro solo si la informacion no se encuentra disponible
 		self.ruta = ruta
 		try:
 			datos = TinyTag.get(ruta)

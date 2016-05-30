@@ -127,6 +127,3 @@ class ColaDeReproduccion:
             for x in range(self.actual + 1, self.actual + n_canciones + 1):
                 n_siguientes.append(self.canciones[x])
         return n_siguientes
-
-    def cantidad_canciones(self):
-        return self.largo
