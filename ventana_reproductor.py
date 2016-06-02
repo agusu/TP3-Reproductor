@@ -2,15 +2,12 @@ import pyglet
 from pyglet.window import key
 
 PAD = 5
-
+ALTURA_LABELS = 20
+# Altura de los labels, util para calcular la posición de los mismos cuando hay varios juntos
 
 class VentanaReproductor(pyglet.window.Window):
     """ Ventana del reproductor, que permite controlarlo, modificar la cola de reproduccion y
     muestra la informacion de la cancion actual."""
-
-    # Altura de los labels, util para calcular la posición de los mismos cuando hay varios juntos
-    ALTURA_LABELS = 20
-
     MENSAJE_AGREGADA = "Cancion agregada a la cola de reproducción exitosamente"
     MENSAJE_REMOVIDA = "Cancion removida de la cola de reproducción exitosamente"
     MENSAJE_DESHECHO = "Se deshizo la modificación"
@@ -18,7 +15,7 @@ class VentanaReproductor(pyglet.window.Window):
     MENSAJE_FALLO_MODIFICACION = "No se pudo modificar la cola de reproducción"
 
     def __init__(self, reproductor):
-        super().__init__(caption='Reproductor', height=self.ALTURA_LABELS * (
+        super().__init__(caption='Reproductor', height=ALTURA_LABELS * (
             9 + WidgetColaReproduccion.CANTIDAD_CANCIONES_MOSTRADAS), visible=True, resizable=False)
         self.reproductor = reproductor
         self.reproductor.on_eos = self.on_eos
@@ -27,35 +24,35 @@ class VentanaReproductor(pyglet.window.Window):
         pad = PAD
         # Label que muestra el estado del reproductor (reproduciendo o detenido)
         self.label_estado = pyglet.text.Label("Estado", y=self.height, anchor_y="top", x=pad,
-                                              height=self.ALTURA_LABELS, batch=self.batch, italic=True,
+                                              height=ALTURA_LABELS, batch=self.batch, italic=True,
                                               color=(255, 215, 59, 255))
         # Labels para mostrar la informacion de la cancion actual
-        self.label_titulo = pyglet.text.Label("Titulo", y=self.label_estado.y - self.ALTURA_LABELS,
-                                              anchor_y="top", height=self.ALTURA_LABELS, x=pad,
+        self.label_titulo = pyglet.text.Label("Titulo", y=self.label_estado.y - ALTURA_LABELS,
+                                              anchor_y="top", height=ALTURA_LABELS, x=pad,
                                               batch=self.batch, bold=True, font_size=14)
-        self.label_autor = pyglet.text.Label("Artista", y=self.label_titulo.y - self.ALTURA_LABELS,
-                                             anchor_y="top", height=self.ALTURA_LABELS,
+        self.label_autor = pyglet.text.Label("Artista", y=self.label_titulo.y - ALTURA_LABELS,
+                                             anchor_y="top", height=ALTURA_LABELS,
                                              batch=self.batch, font_size=13, x=pad)
 
         # Seccion de agregar/remover cancion
         self.label_ruta = pyglet.text.Label("Ruta canción:",
-                                            y=self.label_autor.y - self.ALTURA_LABELS * 2, x=pad,
+                                            y=self.label_autor.y - ALTURA_LABELS * 2, x=pad,
                                             anchor_y='top', width=120, batch=self.batch, color=(255, 215, 59, 255))
-        self.texto_ruta = WidgetTexto(self.label_ruta.width, self.label_ruta.y - self.ALTURA_LABELS,
+        self.texto_ruta = WidgetTexto(self.label_ruta.width, self.label_ruta.y - ALTURA_LABELS,
                                       self.width - self.label_ruta.width - 10, self.batch)
         self.label_modificado = pyglet.text.Label("",
-                                                  y=self.label_ruta.y - self.ALTURA_LABELS - WidgetTexto.PAD,
+                                                  y=self.label_ruta.y - ALTURA_LABELS - WidgetTexto.PAD,
                                                   anchor_y='top', width=self.width, multiline=True,
                                                   batch=self.batch, x=pad, color=(192,202,216,255))
         self.focus = None
 
         # Seccion cola de reproduccion
         self.label_cola_reproduccion = pyglet.text.Label("Cola de reproducción:",
-                                                         y=self.label_modificado.y - self.ALTURA_LABELS * 2, x=PAD,
+                                                         y=self.label_modificado.y - ALTURA_LABELS * 2, x=PAD,
                                                          anchor_y='top', batch=self.batch, color=(255, 215, 59, 255))
         self.lista_cola_reproduccion = WidgetColaReproduccion(self.reproductor.cola_de_reproduccion,
                                                               0,
-                                                              self.label_cola_reproduccion.y - self.ALTURA_LABELS * 2)
+                                                              self.label_cola_reproduccion.y - ALTURA_LABELS * 2)
 
     def actualizar(self):
         """ Actualiza el estado de las labels de estado del reproductor, cancion actual y la
@@ -215,22 +212,22 @@ class WidgetColaReproduccion():
         """ x e y indican la posicion del widget y cola_de_reproduccion una ColaDeReproduccion de
         la que se quiere mostrar la informacion de las canciones."""
         self.cola_de_reproduccion = cola_de_reproduccion
-        self.cola_mostrada = cola_de_reproduccion.obtener_n_siguientes(self.CANTIDAD_CANCIONES_MOSTRADAS)
+        self.lista_mostrada = cola_de_reproduccion.obtener_n_siguientes(self.CANTIDAD_CANCIONES_MOSTRADAS)
         self.x = x
         self.y = y
 
     def actualizar(self):
         """ Actualiza la informacion de las canciones de la cola de reproduccion que se muestran en el widget."""
-        self.cola_mostrada = self.cola_de_reproduccion.obtener_n_siguientes(self.CANTIDAD_CANCIONES_MOSTRADAS)
+        self.lista_mostrada = self.cola_de_reproduccion.obtener_n_siguientes(self.CANTIDAD_CANCIONES_MOSTRADAS)
 
     def dibujar(self):
         """ Dibuja la lista de canciones de la cola de reproduccion en la pantalla """
-        rango = len(self.cola_mostrada)
+        rango = len(self.lista_mostrada)
         if self.CANTIDAD_CANCIONES_MOSTRADAS < rango:
             rango = self.CANTIDAD_CANCIONES_MOSTRADAS
 
         for i in range(0, rango):
-            cancion = self.cola_mostrada[i]
+            cancion = self.lista_mostrada[i]
             pyglet.text.Label(
                 text="{} - {}".format(cancion.obtener_titulo(), cancion.obtener_artista()),
-                x=self.x + PAD, y=self.y - 20 * i, color=(0, 255, 0, 255)).draw()
+                x=self.x + PAD, y=self.y - ALTURA_LABELS * i, color=(0, 255, 0, 255)).draw()

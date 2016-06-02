@@ -60,7 +60,7 @@ class ColaDeReproduccion:
         correctamente, False en caso contrario. Esta accion puede deshacerse y rehacerse."""
         if not self.canciones:
             return False
-        for x in range(self.cantidad_canciones()):
+        for x in range(self.largo):
             if self.canciones[x].obtener_ruta() == ruta_cancion:
                 self.historial.apilar(Accion(self.canciones.pop(x), REMOVER, x))
                 self.largo -= 1
