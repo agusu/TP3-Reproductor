@@ -120,7 +120,7 @@ class ColaDeReproduccion:
         quedan menos canciones que las pedidas, la lista contendra menos elementos que los
         pedidos."""
         n_siguientes = []
-        if n_canciones > len(self.canciones) - self.actual - 1:
+        if n_canciones > self.largo - self.actual - 1:
             for x in range(self.actual + 1, len(self.canciones)):
                 n_siguientes.append(self.canciones[x])
         else:
