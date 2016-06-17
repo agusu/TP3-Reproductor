@@ -28,7 +28,7 @@ class ColaDeReproduccion:
     def cancion_siguiente(self):
         """ Devuelve un objeto de clase Cancion que corresponde a la cancion siguiente en la cola,
         o None si no hay mas canciones."""
-        if self.canciones[self.actual] == self.canciones[-1] or not self.canciones:
+        if self.actual == self.largo-1 or not self.canciones:
             return None
         self.actual += 1
         return self.canciones[self.actual]
@@ -36,7 +36,7 @@ class ColaDeReproduccion:
     def cancion_anterior(self):
         """ Devuelve un objeto de clase Cancion que corresponde a la cancion anterior en la cola,
         o None si no hay canciones en la misma o la actual es la primera de la cola."""
-        if self.canciones[self.actual] == self.canciones[0] or not self.canciones:
+        if self.actual == 0 or not self.canciones:
             return None
         self.actual -= 1
         return self.canciones[self.actual]
@@ -120,10 +120,9 @@ class ColaDeReproduccion:
         quedan menos canciones que las pedidas, la lista contendra menos elementos que los
         pedidos."""
         n_siguientes = []
-        if n_canciones > len(self.canciones) - self.actual - 1:
-            for x in range(self.actual + 1, len(self.canciones)):
+        for x in range(self.actual + 1, self.actual + n_canciones + 1):
+            try:
                 n_siguientes.append(self.canciones[x])
-        else:
-            for x in range(self.actual + 1, self.actual + n_canciones + 1):
-                n_siguientes.append(self.canciones[x])
+            except IndexError:
+                break
         return n_siguientes
