@@ -91,14 +91,14 @@ class ColaDeReproduccion:
             self.canciones.pop(accion.posicion)
         else:
             self.canciones.pop()
-
+        self.largo -= 1
     def _deshacer_remocion(self, accion):
         """Recibe por parametro un objeto de la clase Accion y remueve la cancion que contiene de la Cola de Rep."""
         if accion.posicion:
             self.canciones.insert(accion.cancion, accion.posicion)
         else:
             self.canciones.append(accion.cancion)
-
+        self.largo += 1
     def rehacer_modificacion(self):
         """ Rehace la ultima accion que se deshizo. Devuelve True si pudo rehacerse, False en caso
         contrario."""
