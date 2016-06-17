@@ -2,7 +2,7 @@ REMOVER = '-'
 AGREGAR = '+'
 
 class Accion:
-    def __init__(self, cancion, tipo=AGREGAR, posicion=None):
+    def __init__(self, cancion, tipo = AGREGAR, posicion = None):
         """Recibe un objeto de la clase cancion y un tipo de accion (AGREGAR/REMOVER)"""
         self.tipo = tipo
         self.cancion = cancion
