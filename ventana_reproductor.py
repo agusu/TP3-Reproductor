@@ -229,3 +229,4 @@ class WidgetColaReproduccion():
         for i in range(0, rango):
             cancion = self.lista_mostrada[i]
             a = pyglet.text.Label(text="{} - {}".format(cancion.obtener_titulo(), cancion.obtener_artista()), x=self.x + PAD, y=self.y - ALTURA_LABELS * i, color=(0, 255, 0, 255)).draw()
+

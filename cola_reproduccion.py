@@ -128,3 +128,4 @@ class ColaDeReproduccion:
             except IndexError:
                 break
         return n_siguientes
+
