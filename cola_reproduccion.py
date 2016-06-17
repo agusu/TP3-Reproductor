@@ -14,7 +14,7 @@ class ColaDeReproduccion:
         reproducir."""
         self.canciones = lista_canciones
         self.actual = 0
-        self.largo = len(lista_canciones)
+        self.largo = 0
         self.historial = PilaHistorial()
         self.deshechos = PilaHistorial()
 
@@ -92,13 +92,15 @@ class ColaDeReproduccion:
         else:
             self.canciones.pop()
         self.largo -= 1
+
     def _deshacer_remocion(self, accion):
         """Recibe por parametro un objeto de la clase Accion y remueve la cancion que contiene de la Cola de Rep."""
         if accion.posicion:
-            self.canciones.insert(accion.cancion, accion.posicion)
+            self.canciones.insert(accion.posicion, accion.cancion)
         else:
             self.canciones.append(accion.cancion)
         self.largo += 1
+
     def rehacer_modificacion(self):
         """ Rehace la ultima accion que se deshizo. Devuelve True si pudo rehacerse, False en caso
         contrario."""

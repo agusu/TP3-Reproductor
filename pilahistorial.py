@@ -24,11 +24,3 @@ class PilaHistorial:
         if not self.historial:
             return None
         return self.historial.pop()
-
-    def ver_tope(self):
-        """Devuelve el elemento del tope de la lista"""
-        if not self.historial:
-            return None
-        tope = self.historial.pop()
-        self.historial.append(tope)
-        return tope
